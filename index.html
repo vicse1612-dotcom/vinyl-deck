@@ -386,7 +386,7 @@ body.land.skin-hifi.m-vinilo .controls .meta{display:none}
 /* ---------- v5: device-native controls ---------- */
 body.native .controls{display:none}
 #deckKeys{position:absolute;left:0;right:0;bottom:0;z-index:30;display:none;flex-direction:column;align-items:center;gap:12px;padding:10px 18px calc(18px + var(--safe-b));transition:opacity .5s}
-body.m-casete #deckKeys,body.m-bobinas #deckKeys{display:flex}
+body.m-bobinas #deckKeys{display:flex}
 body.idle #deckKeys{opacity:0;pointer-events:none}
 .dk-row{display:flex;gap:6px;width:min(100%,420px)}
 .dk{flex:1;border:0;height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:700 9px 'Space Grotesk';letter-spacing:.16em;cursor:pointer;transition:transform .08s,box-shadow .08s}
@@ -409,6 +409,96 @@ body.m-bobinas .dk-play.down::before{background:#4dff7a;box-shadow:0 0 8px #4dff
 
 body.land #deckKeys{left:56%;right:18px;top:50%;bottom:auto;transform:translateY(-38%);padding:0}
 body.land .dk{height:72px}
+
+/* ---------- v6: portable cassette player ---------- */
+#cassWrap{display:grid;place-items:center;padding-top:calc(52px + var(--safe-t))}
+.tp{--tpbody:linear-gradient(160deg,#eef0f2,#c9cdd2 55%,#b4b9bf);--tpink:#2a2d31;--tpedge:#8f949a;width:var(--tpw,360px);border-radius:22px;background:var(--tpbody);color:var(--tpink);padding:16px 16px 18px;position:relative;box-shadow:0 0 0 1.5px var(--tpedge),inset 0 2px 1px rgba(255,255,255,.65),inset 0 -3px 6px rgba(0,0,0,.18),0 30px 50px -18px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:14px}
+.tp::before{content:"";position:absolute;inset:0;border-radius:inherit;background:repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 1px,rgba(0,0,0,.025) 1px 3px);pointer-events:none}
+.tp.negro{--tpbody:linear-gradient(160deg,#3a3c40,#1d1e21 60%,#141517);--tpink:#e6e6e6;--tpedge:#000}
+.tp.rojo{--tpbody:linear-gradient(160deg,#e2574c,#b8352c 60%,#9b2a22);--tpink:#fff3ee;--tpedge:#6e1d17}
+.tp.azul{--tpbody:linear-gradient(160deg,#5d8fd6,#2f5d9e 60%,#244a80);--tpink:#eef4ff;--tpedge:#1b375f}
+.tp.crema{--tpbody:linear-gradient(160deg,#f6efe2,#e3d6bf 60%,#d3c3a6);--tpink:#3a2f22;--tpedge:#a8977a}
+.tp.album{--tpbody:linear-gradient(160deg,color-mix(in srgb,var(--shell) 70%,#fff),var(--shell) 60%,color-mix(in srgb,var(--shell) 80%,#000));--tpink:#fff;--tpedge:color-mix(in srgb,var(--shell) 60%,#000)}
+.tp-head{position:relative;display:flex;align-items:center;gap:10px;font-size:11px}
+.tp-head .logo{font-size:12px}
+.tp-model{font:700 9px 'Space Grotesk';letter-spacing:.2em;opacity:.6;margin-left:auto}
+.tp-led{width:8px;height:8px;border-radius:50%;background:#5a1b14;box-shadow:inset 0 1px 1px rgba(0,0,0,.5)}
+body.playing .tp-led{background:#ff4b2b;box-shadow:0 0 8px #ff4b2b}
+.tp-door{position:relative;border-radius:10px;padding:14px;background:linear-gradient(#202124,#111214);box-shadow:inset 0 3px 10px rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.4);cursor:pointer}
+.tp-cass svg{display:block;width:100%;height:auto;position:static!important;filter:drop-shadow(0 6px 8px rgba(0,0,0,.5))!important}
+.tp-glass{position:absolute;inset:6px;border-radius:7px;background:linear-gradient(125deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 30%,transparent 55%,rgba(255,255,255,.06));box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);pointer-events:none}
+.tp-dir{position:absolute;right:16px;bottom:-2px;transform:translateY(100%);font:700 9px 'Space Grotesk';letter-spacing:.24em;opacity:.55}
+.tp-keys{position:relative;display:flex;gap:6px;margin-top:6px}
+.tp .dk{flex:1;height:60px;border:0;border-radius:6px 6px 10px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:700 9px 'Space Grotesk';letter-spacing:.16em;background:linear-gradient(#fbfbfc,#d6d9dd);color:#2a2d31;box-shadow:0 7px 0 #8d9399,0 10px 14px rgba(0,0,0,.3);transition:transform .08s,box-shadow .08s;cursor:pointer}
+.tp .dk svg{width:18px;height:18px}
+.tp .dk.down{transform:translateY(5px);box-shadow:0 2px 0 #8d9399,0 4px 8px rgba(0,0,0,.25);background:linear-gradient(#e6e8eb,#c8ccd1)}
+.tp .dk-play.down{color:#d2402c}
+.tp-foot{position:relative;display:flex;align-items:center;gap:12px}
+.tp-wheel{flex:1;height:30px;border-radius:15px;background:linear-gradient(#2b2d31,#141518);box-shadow:inset 0 2px 5px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.35);overflow:hidden;position:relative;touch-action:none;cursor:ew-resize}
+.tp-wheel i{position:absolute;inset:3px 10px;border-radius:12px;background:repeating-linear-gradient(90deg,#9ba0a6 0 2px,#5d6166 2px 6px);background-position:var(--wp,0) 0;box-shadow:inset 0 6px 6px rgba(255,255,255,.18),inset 0 -6px 8px rgba(0,0,0,.55)}
+.tp-vol{font:700 9px 'Space Grotesk';letter-spacing:.2em;min-width:58px;text-align:right}
+.tp-vol b{display:block;font-size:16px;letter-spacing:0;font-variant-numeric:tabular-nums}
+.tp-meter{display:flex;gap:2px;align-items:flex-end;height:24px}
+.tp-meter i{width:4px;height:100%;border-radius:1px;background:rgba(0,0,0,.25)}
+.tp-meter i.on{background:#3ad16a;box-shadow:0 0 4px #3ad16a}.tp-meter i.on.hot{background:#ff5a3c;box-shadow:0 0 4px #ff5a3c}
+body.land .tp{flex-direction:row;flex-wrap:wrap;align-items:stretch}
+body.land .tp-head{width:100%}
+body.land .tp-door{flex:1.25}
+body.land .tp-side{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
+
+/* ---------- v6: Media (classic desktop player) ---------- */
+#v-media{background:#050608}
+.wm{--wm-glow:#4fb3ff;--wm-top:#2e3034;--wm-bot:#050506;--wm-text:#e8eef7;position:absolute;left:10px;right:10px;top:calc(56px + var(--safe-t));bottom:calc(12px + var(--safe-b));display:flex;flex-direction:column;border-radius:10px;overflow:hidden;background:#000;box-shadow:0 0 0 1px #2a2c30,0 20px 50px rgba(0,0,0,.6);color:var(--wm-text);font-family:'Segoe UI','Space Grotesk',system-ui,sans-serif}
+.wm.azul{--wm-glow:#ffd84a;--wm-top:#3d7be0;--wm-bot:#1a4fb0;--wm-text:#fff}
+.wm.plata{--wm-glow:#2f8de4;--wm-top:#f2f3f5;--wm-bot:#b9bec6;--wm-text:#1b2430}
+.wm.album{--wm-glow:var(--glow);--wm-top:color-mix(in srgb,var(--shell) 55%,#fff);--wm-bot:color-mix(in srgb,var(--shell) 70%,#000);--wm-text:#fff}
+.wm-title{display:flex;align-items:center;gap:10px;padding:8px 12px;background:linear-gradient(var(--wm-top),var(--wm-bot));font-size:11px;border-bottom:1px solid rgba(0,0,0,.6)}
+.wm-title .logo{font-size:11px}.wm-app{font-size:13px;opacity:.85}
+.wm-win{margin-left:auto;display:flex;gap:6px}.wm-win i{width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}.wm-win i:last-child{background:#c9483b}
+.wm-tabs{display:flex;background:linear-gradient(#1b1c1f,#0b0b0c);border-bottom:1px solid #000;overflow-x:auto;scrollbar-width:none}
+.wm.azul .wm-tabs{background:linear-gradient(#5b93ea,#2a64c8)}.wm.plata .wm-tabs{background:linear-gradient(#e9ebee,#c9cdd3)}
+.wm-tabs button{flex:none;border:0;background:none;color:inherit;font:600 12.5px 'Segoe UI','Space Grotesk',sans-serif;padding:9px 14px;opacity:.75;position:relative}
+.wm-tabs button.on{opacity:1}
+.wm-tabs button.on::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:3px;border-radius:2px;background:var(--wm-glow);box-shadow:0 0 10px var(--wm-glow)}
+.wm-main{position:relative;flex:1;min-height:0;background:#000}
+#wmCanvas{position:absolute;inset:0;width:100%;height:100%}
+.wm-info{position:absolute;left:14px;top:12px;display:flex;flex-direction:column;gap:2px;text-shadow:0 1px 3px #000;max-width:80%}
+.wm-info b{font-size:16px}.wm-info span{font-size:12.5px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wm-bar{background:linear-gradient(#3a3c40,#151618 46%,#000 52%,#0c0c0d);border-top:1px solid #4a4d52;padding:0 12px 12px}
+.wm.azul .wm-bar{background:linear-gradient(#6fa3f0,#2c66cc 46%,#1c4fb0 52%,#2457b8)}
+.wm.plata .wm-bar{background:linear-gradient(#ffffff,#dfe2e6 46%,#c7cbd1 52%,#d7dade)}
+.wm.album .wm-bar{background:linear-gradient(color-mix(in srgb,var(--shell) 60%,#fff),var(--shell) 46%,color-mix(in srgb,var(--shell) 70%,#000) 52%,color-mix(in srgb,var(--shell) 85%,#000))}
+.wm-seek{position:relative;height:16px;cursor:pointer;touch-action:none}
+.wm-seek::before{content:"";position:absolute;left:0;right:0;top:6px;height:4px;border-radius:2px;background:rgba(0,0,0,.55);box-shadow:inset 0 1px 1px rgba(0,0,0,.6),0 1px 0 rgba(255,255,255,.12)}
+.wm-seek i{position:absolute;left:0;top:6px;height:4px;border-radius:2px;background:linear-gradient(90deg,color-mix(in srgb,var(--wm-glow) 60%,#000),var(--wm-glow));box-shadow:0 0 8px var(--wm-glow)}
+.wm-seek b{position:absolute;top:2px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#c7d3e3 60%,#7a8899)}
+.wm-row{display:flex;align-items:center;gap:10px}
+.wm-status{display:flex;flex-direction:column;font-size:11px;min-width:0;flex:1;opacity:.85}
+.wm-status #wmTime{font-variant-numeric:tabular-nums;font-size:13px}
+.wm-ctrls{display:flex;align-items:center;gap:4px}
+.wm-b{width:34px;height:34px;border:0;border-radius:50%;background:none;color:inherit;opacity:.78;display:grid;place-items:center;cursor:pointer}
+.wm-b svg{width:17px;height:17px}.wm-b.on{opacity:1;color:var(--wm-glow);filter:drop-shadow(0 0 4px var(--wm-glow))}
+.wm-sep{width:1px;height:22px;background:rgba(255,255,255,.15);margin:0 2px}
+.wm-orb{width:58px;height:58px;border-radius:50%;border:0;display:grid;place-items:center;color:#fff;cursor:pointer;margin:-12px 2px 0;background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--wm-glow) 55%,#fff) 0,var(--wm-glow) 28%,color-mix(in srgb,var(--wm-glow) 45%,#000) 70%,#020a14 100%);box-shadow:0 0 0 3px #1a1b1e,0 0 0 4px rgba(255,255,255,.18),0 0 18px color-mix(in srgb,var(--wm-glow) 60%,transparent),inset 0 -6px 10px rgba(0,0,0,.45);position:relative}
+.wm-orb::after{content:"";position:absolute;left:18%;right:18%;top:7%;height:40%;border-radius:50%;background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,0))}
+.wm-orb svg{width:24px;height:24px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+.wm-orb:active{transform:scale(.96)}
+.wm-vol{position:relative;width:74px;height:16px;cursor:pointer;touch-action:none}
+.wm-vol::before{content:"";position:absolute;left:0;right:0;top:6px;height:4px;border-radius:2px;background:rgba(0,0,0,.55)}
+.wm-vol i{position:absolute;left:0;top:6px;height:4px;border-radius:2px;background:var(--wm-glow)}
+.wm-vol b{position:absolute;top:2px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#c7d3e3 60%,#7a8899)}
+@media (max-width:400px){.wm-b{width:30px}.wm-vol{width:54px}.wm-orb{width:52px;height:52px}}
+
+.tp svg{position:static!important;filter:none}
+.tp .tp-cass svg{filter:drop-shadow(0 6px 8px rgba(0,0,0,.5))!important}
+.wm-row{flex-wrap:wrap;row-gap:6px}
+.wm-status{flex-direction:row;justify-content:space-between;width:100%;flex:none}
+.wm-ctrls{margin:0 auto}
+body.land .wm-status{width:auto;flex:1;flex-direction:column;justify-content:center}
+body.land .wm-ctrls{margin:0}
+
+.tp.rojo .logo b,.tp.album .logo b{color:#fff}
+.wm-info{color:#fff}
 </style>
 </head>
 <body class="grain">
@@ -477,6 +567,32 @@ body.land .dk{height:72px}
         <div class="pp-cols"><div><b>AHORA SUENA</b><span id="ppNow">—</span></div><div><b>SIGUIENTE</b><span id="ppNext">—</span></div></div>
       </div>
     </section>
+    <!-- MEDIA (classic desktop player) -->
+    <section class="view" id="v-media"><div class="wm" id="wm">
+      <div class="wm-title"><span class="logo">VINYL<b>●</b>DECK</span><span class="wm-app">Media</span><span class="wm-win"><i></i><i></i><i></i></span></div>
+      <div class="wm-tabs"><button class="on" type="button">Reproduciendo</button><button type="button" data-go="coleccion">Biblioteca</button><button type="button" id="wmVizBtn">Visualización</button></div>
+      <div class="wm-main"><canvas id="wmCanvas"></canvas>
+        <div class="wm-info"><b id="wmTitle">—</b><span id="wmArtist">—</span><span id="wmAlbum"></span></div>
+      </div>
+      <div class="wm-bar">
+        <div class="wm-seek" id="wmSeekBar"><i id="wmSeek"></i><b id="wmKnob"></b></div>
+        <div class="wm-row">
+          <div class="wm-status"><span id="wmState">Reproduciendo</span><span id="wmTime">00:00</span></div>
+          <div class="wm-ctrls">
+            <button class="wm-b" data-w="shuffle" aria-label="Aleatorio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h3c4 0 6 10 10 10h4M17 14l3 3-3 3M3 17h3c1.6 0 2.8-1.4 3.8-3M13 9.6C14 8.1 15 7 16 7h4M17 4l3 3-3 3"/></svg></button>
+            <button class="wm-b" data-w="repeat" aria-label="Repetir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11V9a3 3 0 0 1 3-3h12M16 3l3 3-3 3M20 13v2a3 3 0 0 1-3 3H5M8 21l-3-3 3-3"/></svg></button>
+            <span class="wm-sep"></span>
+            <button class="wm-b" data-w="stop" aria-label="Detener"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1"/></svg></button>
+            <button class="wm-b" data-w="prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2.4v14H6zM19 5v14L9 12z"/></svg></button>
+            <button class="wm-orb" data-w="pp" aria-label="Reproducir o pausar"><svg id="wmOrbI" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+            <button class="wm-b" data-w="next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.6 5H18v14h-2.4zM5 5v14l10-7z"/></svg></button>
+            <span class="wm-sep"></span>
+            <button class="wm-b" data-w="mute" aria-label="Silenciar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="wmWaves" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button>
+            <div class="wm-vol" id="wmVol"><i id="wmVolF"></i><b id="wmVolK"></b></div>
+          </div>
+        </div>
+      </div>
+    </div></section>
     <!-- CASSETTE -->
     <section class="view" id="v-cassette"><div class="devwrap" id="cassWrap"></div></section>
     <!-- 8 TRACK (legacy, hidden) -->
@@ -512,6 +628,7 @@ body.land .dk{height:72px}
       <button data-m="casete">Casete</button>
       <button data-m="bobinas">Bobinas</button>
       <button data-m="ipod">iPod</button>
+      <button data-m="media">Media</button>
       <button data-m="winamp">Winamp</button>
       <button data-m="vfd">VFD</button>
       <button data-m="ondas">Ondas</button>
@@ -616,7 +733,7 @@ const COLORKEYS=['bg','surface','accent','vinyl','shell','stripe','glow'];
 const ARMS={plata:['#d9dcdf','#9aa0a6','#cfd3d6'],negro:['#2b2b2b','#111','#3a3a3a'],dorado:['#e0bd62','#9c7a2a','#e8cb83']};
 const RPM={33:1,45:1.35,78:2.34};
 
-const defaults={palette:'menta',...PALETTES.menta,autoVinyl:false,autoShell:false,crt:true,grain:true,dots:false,autoHide:false,wake:false,ambient:false,rpm:33,arm:'plata',retro:'winamp',shellStyle:'solido',collView:'carrusel',peek:true,mode:'vinilo',lastVisual:'vinilo',autoTheme:true,blurBg:true,worn:true,wSkin:'clasico',wBars:'segmentos',wHeat:true,vfdColor:'#4dffc3',vfdClock:true,wvInt:'normal',wvTitle:true,eggs:true,vinylSkin:'moderno',reelColor:'aluminio',deckPanel:'plata',ipodBody:'blanco',ipodScreen:'color'};
+const defaults={palette:'menta',...PALETTES.menta,autoVinyl:false,autoShell:false,crt:true,grain:true,dots:false,autoHide:false,wake:false,ambient:false,rpm:33,arm:'plata',retro:'winamp',shellStyle:'solido',collView:'carrusel',peek:true,mode:'vinilo',lastVisual:'vinilo',autoTheme:true,blurBg:true,worn:true,wSkin:'clasico',wBars:'segmentos',wHeat:true,vfdColor:'#4dffc3',vfdClock:true,wvInt:'normal',wvTitle:true,eggs:true,vinylSkin:'moderno',reelColor:'aluminio',deckPanel:'plata',ipodBody:'blanco',ipodScreen:'color',tpColor:'plata',wmSkin:'clasico',wmViz:'barras'};
 let S=Object.assign({},defaults,store.get('vd2.settings',{}));
 delete S.name;
 const save=()=>store.set('vd2.settings',S);
@@ -794,7 +911,7 @@ function buildCassette(){
   const stain=worn&&R()<.55?`<ellipse cx="${300+R()*70}" cy="${60+R()*60}" rx="26" ry="24" fill="none" stroke="#8a6a3a" stroke-opacity=".18" stroke-width="5" stroke-dasharray="60 14 30 8"/>`:'';
   const tape=worn?`<g transform="rotate(${-12+R()*6} 50 26)"><rect x="18" y="14" width="64" height="20" fill="#f2e7c9" fill-opacity=".85"/><rect x="18" y="14" width="64" height="20" fill="url(#paperN)" opacity=".5"/></g>`:'';
   const secret=R()<.15?`<text x="210" y="263" text-anchor="middle" class="hand" font-size="9" fill="#d9cfb8" opacity=".7">si encuentras esta cinta, es tuya</text>`:'';
-  wrap.innerHTML=`<svg id="cassSvg" viewBox="0 0 420 270" xmlns="http://www.w3.org/2000/svg">
+  const svgStr=`<svg id="cassSvg" viewBox="0 0 420 270" xmlns="http://www.w3.org/2000/svg">
   <defs>
    <clipPath id="winClip"><rect x="112" y="84" width="196" height="64" rx="10"/></clipPath>
    <clipPath id="cvClip"><rect x="34" y="54" width="56" height="56" rx="3"/></clipPath>
@@ -845,7 +962,7 @@ function buildCassette(){
   <path id="tangle" style="display:none" d="M180 256 C170 300, 230 300, 220 262 C214 290, 196 296, 200 258" fill="none" stroke="#4a3428" stroke-width="3"/>
   </g>
   </svg>`;
-  placeSvg($('#cassSvg'),deviceBox(wrap,420,270));
+  wrap.innerHTML=tpHTML(svgStr);sizeTp();
 }
 
 /* ================= 8-track ================= */
@@ -1053,6 +1170,7 @@ function applyTheme(rebuild=true){
   $$('.armRod').forEach(e=>e.setAttribute('stroke',a[0]));$$('.armEdge').forEach(e=>e.setAttribute('stroke',a[1]));$$('.armPiv').forEach(e=>e.setAttribute('fill',a[2]));
   recordTexture();
   if(rebuild){buildCassette();buildReel()}
+  wmSkin();
   $('#flow').classList.toggle('grid',S.collView==='cuadricula');
   syncPanel();syncSettings();save();
 }
@@ -1060,7 +1178,8 @@ function applyTheme(rebuild=true){
 /* ================= track ================= */
 const playSvg='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>',pauseSvg='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
 function updateMeta(){
-  document.body.classList.toggle('playing',!!T.playing);$$('#deckKeys .dk').forEach(b=>b.classList.toggle('down',(b.dataset.a==='play'&&T.playing)||(b.dataset.a==='pause'&&!T.playing)));$('#ipState')&&($('#ipState').textContent=T.playing?'▶':'❚❚');
+  if(typeof WM!=='undefined'&&WM.g)wmMeta();
+  document.body.classList.toggle('playing',!!T.playing);$$('.dk').forEach(b=>b.classList.toggle('down',(b.dataset.a==='play'&&T.playing)||(b.dataset.a==='pause'&&!T.playing)));$('#ipState')&&($('#ipState').textContent=T.playing?'▶':'❚❚');
   $('#tTitle').textContent=T.title;$('#tArtist').textContent=T.artist;
   $('#playIcon').innerHTML=T.playing?pauseSvg:playSvg;$('#playLbl').textContent=T.playing?'PAUSA':'PLAY';
 }
@@ -1099,18 +1218,18 @@ function updateSkinMeta(){
 }
 
 /* ================= modes ================= */
-const MODES=['coleccion','vinilo','casete','bobinas','ipod','winamp','vfd','ondas'];
+const MODES=['coleccion','vinilo','casete','bobinas','ipod','media','winamp','vfd','ondas'];
 const RETRO_MODES=['winamp','vfd','ondas'];
-const VIEW={coleccion:'#v-coll',vinilo:'#v-vinyl',casete:'#v-cassette',bobinas:'#v-reel',ipod:'#v-ipod',winamp:'#v-retro',vfd:'#v-retro',ondas:'#v-retro'};
+const VIEW={coleccion:'#v-coll',vinilo:'#v-vinyl',casete:'#v-cassette',bobinas:'#v-reel',ipod:'#v-ipod',media:'#v-media',winamp:'#v-retro',vfd:'#v-retro',ondas:'#v-retro'};
 const viewFor=m=>m==='vinilo'?({hifi:'#v-hifi',papel:'#v-papel'}[S.vinylSkin]||'#v-vinyl'):VIEW[m];
-const MODE_NAME={coleccion:'Colección',vinilo:'Vinilo',casete:'Casete',bobinas:'Bobinas',ipod:'iPod',winamp:'Winamp',vfd:'Display VFD',ondas:'Ondas'};
+const MODE_NAME={coleccion:'Colección',vinilo:'Vinilo',casete:'Casete',bobinas:'Bobinas',ipod:'iPod',media:'Media',winamp:'Winamp',vfd:'Display VFD',ondas:'Ondas'};
 function setMode(m){
   if(m==='retro')m=RETRO_MODES.includes(S.retro)?S.retro:'winamp';
   if(m==='ocho-track')m='bobinas';
   if(!MODES.includes(m))m='vinilo';
   if(RETRO_MODES.includes(m))S.retro=m;
   S.mode=m;if(m!=='coleccion')S.lastVisual=m;save();
-  MODES.forEach(x=>document.body.classList.toggle('m-'+x,x===m));document.body.classList.toggle('native',['casete','bobinas','ipod','winamp','vfd'].includes(m));document.body.classList.toggle('m-retro',RETRO_MODES.includes(m));
+  MODES.forEach(x=>document.body.classList.toggle('m-'+x,x===m));document.body.classList.toggle('native',['casete','bobinas','ipod','media','winamp','vfd'].includes(m));document.body.classList.toggle('m-retro',RETRO_MODES.includes(m));
   const btn=$(`#modes button[data-m="${m}"]`);if(btn)btn.scrollIntoView({inline:'nearest',block:'nearest'});
   $$('#modes button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
   $$('.view').forEach(v=>v.classList.remove('on'));$(viewFor(m)).classList.add('on');
@@ -1223,7 +1342,11 @@ function renderPanel(){
     h+=sec('Pantalla',chipRow('ipodScreen',{color:'Color (2007)',mono:'Monocromo (2001)'}));
     h+=sec('Cómo se usa','<p class="help">Gira el dedo en la rueda para el volumen. Toca MENU para ir a tu colección, los lados para cambiar de canción y el centro para pausar.</p>');
     h+=colorRows([['bg','Fondo']]);
+  }else if(m==='media'){
+    h+=sec('Aspecto',chipRow('wmSkin',{clasico:'Negro brillante',azul:'Azul 2001',plata:'Plata',album:'Color del álbum'}));
+    h+=sec('Visualización',chipRow('wmViz',{barras:'Barras y ondas',alquimia:'Alquimia',portada:'Portada'}));
   }else if(m==='casete'){
+    h+=sec('Reproductor',chipRow('tpColor',{plata:'Aluminio',negro:'Negro',rojo:'Rojo',azul:'Azul',crema:'Crema',album:'Color del álbum'}));
     h+=sec('Carcasa',chipRow('shellStyle',SHELLS));
     if(m==='casete')h+=sec('Aspecto',togRow('worn','Cinta vieja y gastada','Etiqueta amarillenta, rayones, cinta adhesiva'));
     h+=colorRows([['shell','Color de la carcasa','autoShell'],['stripe','Franja de la etiqueta'],['bg','Fondo'],['accent','Botones']]);
@@ -1305,7 +1428,7 @@ async function doPrev(){if(T.source==='claude')return;if(T.source==='spotify')aw
 $('#playBtn').onclick=doPlayPause;$('#nextBtn').onclick=doNext;
 $('#seek').onclick=e=>{if(T.source==='claude')return;const r=e.currentTarget.getBoundingClientRect();const f=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));const ms=Math.round(f*T.duration);T.progress=ms;if(T.source==='spotify')api('/me/player/seek?position_ms='+ms,{method:'PUT'}).catch(()=>{}).finally(()=>setTimeout(spPoll,400))};
 addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.code==='Space'){e.preventDefault();doPlayPause()}if(e.code==='ArrowRight')doNext();if(e.code==='ArrowLeft')doPrev();const m={Digit0:'coleccion',Digit1:'vinilo',Digit2:'casete',Digit3:'bobinas',Digit4:'ipod',Digit5:'winamp',Digit6:'vfd',Digit7:'ondas'}[e.code];if(m)setMode(m);if(e.key==='f')fullscreen(!document.fullscreenElement)});
-$('#deck').onclick=doPlayPause;$('#cassWrap').onclick=doPlayPause;$('#eightWrap').onclick=doPlayPause;
+$('#deck').onclick=doPlayPause;$('#cassWrap').onclick=e=>{if(e.target.closest('.tp-door'))doPlayPause()};$('#eightWrap').onclick=doPlayPause;
 // swipe left/right on visuals = next/prev
 (()=>{let x0=null,y0=0,t0=0;const st=$('#stage');st.addEventListener('touchstart',e=>{if(S.mode==='coleccion')return;const t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now()},{passive:true});
  st.addEventListener('touchend',e=>{if(x0==null)return;const t=e.changedTouches[0];const dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Date.now()-t0<600&&Math.abs(dx)>70&&Math.abs(dy)<60){dx<0?doNext():doPrev()}},{passive:true})})();
@@ -1443,7 +1566,7 @@ $('#volBtn').onclick=e=>{e.stopPropagation();const p=$('#volPop');const on=!p.cl
   if(on){if(T.source==='spotify'&&!volOK)toast('Este dispositivo no deja cambiar el volumen desde fuera');if(devVol!=null){$('#volRange').value=devVol;$('#volVal').textContent=devVol}}};
 document.addEventListener('pointerdown',e=>{if(!e.target.closest('#volPop')&&!e.target.closest('#volBtn'))$('#volPop').classList.remove('on')});
 function setVolume(v,quiet){v=Math.max(0,Math.min(100,Math.round(v)));devVol=v;$('#volRange').value=v;$('#volVal').textContent=v;
-  $('#dkVol').value=v;$('#dkVolV').textContent=v;const kv=$('#knVol i');if(kv)kv.style.setProperty('--a',(-135+v*2.7)+'deg');const ib=$('#ipVolBar');if(ib)ib.style.width=v+'%';
+  $('#dkVol').value=v;$('#dkVolV').textContent=v;const tw=$('#tpWheel i');if(tw){tw.style.setProperty('--wp',(v*1.2)+'px');$('#tpVolV').textContent=v}if($('#wmVolF')){$('#wmVolF').style.width=v+'%';$('#wmVolK').style.left=v+'%'}const kv=$('#knVol i');if(kv)kv.style.setProperty('--a',(-135+v*2.7)+'deg');const ib=$('#ipVolBar');if(ib)ib.style.width=v+'%';
   clearTimeout(volT);
   if(T.source==='spotify')volT=setTimeout(()=>api('/me/player/volume?volume_percent='+v,{method:'PUT'}).catch(err=>{if(err.message==='403'||err.reason==='VOLUME_CONTROL_DISALLOW')toast('Spotify no deja cambiar el volumen de este dispositivo')}),250);
   else if(T.source==='claude'&&!quiet)toast('El volumen solo funciona en la versión con tu Spotify')}
@@ -1513,7 +1636,7 @@ const _prev=doPrev;
 function prevAction(){const pc=S.mode==='casete'&&chance(.25);_prev();if(pc)setTimeout(EGGS.pencil,150)}
 $('#prevBtn').onclick=prevAction;
 /* device keys (casete / bobinas) */
-$$('#deckKeys .dk').forEach(b=>b.onclick=()=>{const a=b.dataset.a;if(a==='prev')prevAction();else if(a==='next')doNext();else if(a==='play'){if(!T.playing)doPlayPause()}else if(a==='pause'){if(T.playing)doPlayPause()}});
+document.addEventListener('click',e=>{const b=e.target.closest('.dk');if(!b)return;const a=b.dataset.a;if(a==='prev')prevAction();else if(a==='next')doNext();else if(a==='play'){if(!T.playing)doPlayPause()}else if(a==='pause'){if(T.playing)doPlayPause()}});
 $('#dkVol').oninput=e=>setVolume(+e.target.value);
 /* canvas controls (winamp / vfd) */
 (()=>{const cv=$('#retroCanvas');const pt=e=>{const r=cv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
@@ -1541,6 +1664,7 @@ function layoutExtra(){
   fitPapelTitle();
   const iw=$('#ipWrap');if(iw&&iw.clientWidth){const W=iw.clientWidth,H=iw.clientHeight-60;$('#ipod').style.setProperty('--ipw',Math.min(W*.84,H*.94/1.68,460)+'px')}
   if($('#reelSvg'))placeReel();
+  sizeTp();sizeWm();
 }
 
 /* ================= reel-to-reel ================= */
@@ -1621,6 +1745,68 @@ function reelFrame(dt,p,sp){
   $('#ipCenter').addEventListener('click',e=>{e.stopPropagation();doPlayPause()});
 })();
 
+
+/* ================= portable cassette player ================= */
+const KEYS_HTML=`<button class="dk" data-a="prev" aria-label="Rebobinar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 5h2.5v14H5zM20 5v14L8.5 12z"/></svg><small>REW</small></button><button class="dk dk-play" data-a="play" aria-label="Reproducir"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg><small>PLAY</small></button><button class="dk" data-a="pause" aria-label="Pausa"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg><small>PAUSE</small></button><button class="dk" data-a="next" aria-label="Avanzar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 5H19v14h-2.5zM4 5v14l11.5-7z"/></svg><small>FF</small></button>`;
+function tpHTML(svg){const v=devVol==null?50:devVol;
+  return `<div class="tp ${S.tpColor||'plata'}" id="tp"><div class="tp-head"><span class="logo">VINYL<b>●</b>DECK</span><span class="tp-model">CX-90 · AUTO REVERSE</span><i class="tp-led"></i></div>
+  <div class="tp-door"><div class="tp-cass">${svg}</div><div class="tp-glass"></div></div>
+  <div class="tp-side"><div class="tp-keys">${KEYS_HTML}</div>
+  <div class="tp-foot"><div class="tp-meter" id="tpMeter">${'<i></i>'.repeat(10)}</div><div class="tp-wheel" id="tpWheel" aria-label="Volumen"><i style="--wp:${v*1.2}px"></i></div><div class="tp-vol">VOLUME<b id="tpVolV">${v}</b></div></div></div></div>`}
+function sizeTp(){const w=$('#cassWrap'),tp=$('#tp');if(!w||!tp||!w.clientWidth)return;const land=innerWidth>innerHeight*1.05;const H=w.clientHeight-60;
+  tp.style.setProperty('--tpw',(land?Math.min(w.clientWidth*.94,H*2.05,900):Math.min(w.clientWidth*.92,H*.62,460))+'px');
+  updateMeta()}
+document.addEventListener('pointerdown',e=>{const wh=e.target.closest('#tpWheel');if(!wh)return;wh.setPointerCapture(e.pointerId);let x0=e.clientX,v0=devVol==null?50:devVol;
+  const mv=ev=>{setVolume(v0+(ev.clientX-x0)/2,true)};const up=()=>{wh.removeEventListener('pointermove',mv);wh.removeEventListener('pointerup',up);if(T.source==='claude')toast('El volumen solo funciona en la versión con tu Spotify')};
+  wh.addEventListener('pointermove',mv);wh.addEventListener('pointerup',up)});
+
+/* ================= Media (classic desktop player) ================= */
+const WM={c:$('#wmCanvas'),g:null,W:0,H:0,img:null,imgSrc:'',parts:[],shuffle:false,repeat:false,premute:50};
+WM.g=WM.c.getContext('2d');
+function sizeWm(){const r=WM.c.getBoundingClientRect();if(!r.width)return;const d=Math.min(2,devicePixelRatio||1);WM.W=r.width;WM.H=r.height;WM.c.width=r.width*d;WM.c.height=r.height*d;WM.g.setTransform(d,0,0,d,0,0)}
+function wmSkin(){$('#wm').className='wm '+(S.wmSkin||'clasico')}
+function wmCover(){if(WM.imgSrc===T.cover)return;WM.imgSrc=T.cover;WM.img=null;if(!T.cover)return;const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{WM.img=im};im.src=T.cover}
+function drawMedia(dt,t){
+  const g=WM.g,W=WM.W,H=WM.H;if(!W)return;const glow=getComputedStyle($('#wm')).getPropertyValue('--wm-glow').trim()||'#4fb3ff';
+  const viz=S.wmViz||'barras';wmCover();
+  if(viz==='barras'){g.fillStyle='#000';g.fillRect(0,0,W,H);
+    const n=NB,bw=W/n,base=H*.72;
+    const gr=g.createLinearGradient(0,base-H*.5,0,base);gr.addColorStop(0,'#ffffff');gr.addColorStop(.25,glow);gr.addColorStop(1,shade(glow.startsWith('#')?glow:'#4fb3ff',-.6));
+    for(let i=0;i<n;i++){const h=bars[i]*H*.48;g.fillStyle=gr;g.fillRect(i*bw+1,base-h,bw-2,h);g.globalAlpha=.22;g.fillRect(i*bw+1,base+2,bw-2,h*.45);g.globalAlpha=1;
+      g.fillStyle='#fff';g.fillRect(i*bw+1,base-peaks[i]*H*.48-2,bw-2,2)}
+    g.strokeStyle=glow;g.lineWidth=2;g.shadowColor=glow;g.shadowBlur=10;g.beginPath();
+    for(let x=0;x<=W;x+=4){const k=x/W;const y=H*.22+Math.sin(k*18+t*6)*H*.06*(.3+energy)*Math.sin(k*3.1+t)+Math.sin(k*40+t*11)*H*.015*kick;x?g.lineTo(x,y):g.moveTo(x,y)}g.stroke();g.shadowBlur=0}
+  else if(viz==='alquimia'){g.fillStyle='rgba(0,0,0,.12)';g.fillRect(0,0,W,H);g.globalCompositeOperation='lighter';
+    const cx=W/2,cy=H/2,R=Math.min(W,H)*.38;const cols=[glow,eff('vinyl'),eff('stripe')];
+    for(let k=0;k<3;k++){g.strokeStyle=cols[k];g.globalAlpha=.55;g.lineWidth=1.4;g.beginPath();
+      for(let i=0;i<=180;i++){const a=i/180*Math.PI*2;const r=R*(.55+.35*Math.sin(a*(3+k)+t*(.7+k*.2))*(.4+energy*.8)+kick*.08);const x=cx+Math.cos(a+t*.3*(k+1))*r,y=cy+Math.sin(a*1.0+t*.25)*r*.8;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}
+    g.globalAlpha=1;g.globalCompositeOperation='source-over'}
+  else{g.fillStyle='#000';g.fillRect(0,0,W,H);const s=Math.min(W*.62,H*.62)*(1+kick*.03);const x=(W-s)/2,y=H*.12;
+    const rg=g.createRadialGradient(W/2,y+s/2,s*.2,W/2,y+s/2,s*.95);rg.addColorStop(0,glow);rg.addColorStop(1,'rgba(0,0,0,0)');g.globalAlpha=.35+energy*.25;g.fillStyle=rg;g.fillRect(0,0,W,H);g.globalAlpha=1;
+    if(WM.img){g.drawImage(WM.img,x,y,s,s);g.save();g.translate(0,y+s*2+4);g.scale(1,-1);g.globalAlpha=.22;g.drawImage(WM.img,x,0,s,s);g.restore();g.globalAlpha=1;
+      const fg=g.createLinearGradient(0,y+s,0,y+s*1.6);fg.addColorStop(0,'rgba(0,0,0,0)');fg.addColorStop(1,'#000');g.fillStyle=fg;g.fillRect(0,y+s+2,W,s)}
+    else{g.strokeStyle='rgba(255,255,255,.2)';g.strokeRect(x,y,s,s)}}
+  const p=Math.min(1,T.progress/T.duration);$('#wmSeek').style.width=p*100+'%';$('#wmKnob').style.left=p*100+'%';
+  const tm=fmt(T.progress);if($('#wmTime').textContent!==tm)$('#wmTime').textContent=tm;
+}
+function wmMeta(){$('#wmTitle').textContent=T.title;$('#wmArtist').textContent=T.artist;$('#wmAlbum').textContent=T.album||'';
+  $('#wmState').textContent=T.playing?'Reproduciendo':'En pausa';$('#wmOrbI').innerHTML=T.playing?'<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>':'<path d="M8 5v14l11-7z"/>';
+  const v=devVol==null?50:devVol;$('#wmVolF').style.width=v+'%';$('#wmVolK').style.left=v+'%';$('#wmWaves').style.display=v?'':'none';
+  $$('.wm-b[data-w="shuffle"]').forEach(b=>b.classList.toggle('on',WM.shuffle));$$('.wm-b[data-w="repeat"]').forEach(b=>b.classList.toggle('on',WM.repeat))}
+$('#wm').addEventListener('click',e=>{const b=e.target.closest('[data-w]');const tab=e.target.closest('[data-go]');
+  if(tab){setMode(tab.dataset.go);return}
+  if(e.target.closest('#wmVizBtn')){const order=['barras','alquimia','portada'];S.wmViz=order[(order.indexOf(S.wmViz)+1)%3];save();toast('Visualización: '+{barras:'Barras y ondas',alquimia:'Alquimia',portada:'Portada'}[S.wmViz]);return}
+  if(!b)return;const a=b.dataset.w;
+  if(a==='pp')doPlayPause();else if(a==='prev')prevAction();else if(a==='next')doNext();
+  else if(a==='stop'){if(T.playing)doPlayPause();T.progress=0;if(T.source==='spotify')api('/me/player/seek?position_ms=0',{method:'PUT'}).catch(()=>{})}
+  else if(a==='mute'){if(devVol){WM.premute=devVol;setVolume(0)}else setVolume(WM.premute||50)}
+  else if(a==='shuffle'){WM.shuffle=!WM.shuffle;if(T.source==='spotify')api('/me/player/shuffle?state='+WM.shuffle,{method:'PUT'}).catch(()=>{});toast(WM.shuffle?'Aleatorio activado':'Aleatorio desactivado')}
+  else if(a==='repeat'){WM.repeat=!WM.repeat;if(T.source==='spotify')api('/me/player/repeat?state='+(WM.repeat?'context':'off'),{method:'PUT'}).catch(()=>{});toast(WM.repeat?'Repetir activado':'Repetir desactivado')}
+  wmMeta()});
+function slider(el,cb){el.addEventListener('pointerdown',e=>{el.setPointerCapture(e.pointerId);const f=ev=>{const r=el.getBoundingClientRect();cb(Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width)))};f(e);const mv=ev=>f(ev);const up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up)};el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up)})}
+slider($('#wmVol'),f=>{setVolume(f*100,true);wmMeta()});
+slider($('#wmSeekBar'),f=>{const ms=Math.round(f*T.duration);T.progress=ms;clearTimeout(WM.st);WM.st=setTimeout(()=>{if(T.source==='spotify')api('/me/player/seek?position_ms='+ms,{method:'PUT'}).catch(()=>{})},200)});
+
 /* ================= main loop ================= */
 let last=performance.now(),tt=0;
 function frame(now){
@@ -1648,6 +1834,7 @@ function frame(now){
     const l=$('#tapeL'),r=$('#tapeR');if(l){l.setAttribute('r',rl);r.setAttribute('r',rr);
       C.l=(C.l+V.spin*sp*2600/rl*dt)%360;C.r=(C.r+V.spin*sp*2600/rr*dt)%360;
       $('#hubL').setAttribute('transform',`rotate(${C.l})`);$('#hubR').setAttribute('transform',`rotate(${C.r})`);
+      const tm=$('#tpMeter');if(tm){const lv=Math.round((levelL+levelR)/2*10);const ms=tm.children;for(let i=0;i<10;i++){const cl=i<lv?(i>7?'on hot':'on'):'';if(ms[i].className!==cl)ms[i].className=cl}}
       if(EGG.pencil>now){C.l=(C.l-600*dt)%360;$('#pencilRot').setAttribute('transform',`translate(160,116) rotate(${C.l})`)}}
   }else if(m==='ocho-track'){
     E.reel=(E.reel+V.spin*sp*90*dt)%360;E.roller=(E.roller+V.spin*sp*420*dt)%360;
@@ -1655,6 +1842,8 @@ function frame(now){
       const pr=Math.min(3,Math.floor(p*4));for(let i=0;i<4;i++){$('#prog'+i).setAttribute('fill',i===pr?S.glow:'#e3d9c2')}}
   }else if(m==='bobinas'){
     reelFrame(dt,p,sp);
+  }else if(m==='media'){
+    drawMedia(dt,tt);
   }else if(m==='ipod'){
     $('#ipBar').style.width=(p*100)+'%';$('#ipEl').textContent=fmt(T.progress);$('#ipRem').textContent='-'+fmt(T.duration-T.progress);
   }else if(RETRO_MODES.includes(m)){
