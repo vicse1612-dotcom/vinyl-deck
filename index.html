@@ -623,6 +623,26 @@ body.mini .sheet{max-height:92vh}
 body.mini .controls .meta,body.mini .controls .bar,body.mini .controls .hint,body.mini .controls .pill small,body.mini #volBtn,body.mini #ambBtn{display:none!important}
 body.mini .controls{padding-bottom:10px}
 body.mini #cassWrap{padding:6px}
+/* papel / hifi en ventana chica */
+body.mini .pp{padding:14px 14px 12px}
+body.mini .pp-hdr{white-space:nowrap;font-size:9px;letter-spacing:.14em;padding-right:44px}
+body.mini .pp-hdr .logo{font-size:9px}
+body.mini.tiny #ppNo,body.mini.tiny .pp-side{display:none}
+body.mini .pp-title{margin:10px 0 4px}
+body.mini .pp-sub{font-size:14px}
+body.mini .pp-art{margin:8px -14px 0;min-height:60px}
+body.mini .pp-cols{font-size:11px;padding-top:8px;gap:10px}
+body.mini.short .pp-cols{display:none}
+body.mini.land .pp-art{top:12px;bottom:12px;width:54%}
+body.mini.land .pp-hdr,body.mini.land .pp-title,body.mini.land .pp-sub,body.mini.land .pp-cols{max-width:42%}
+body.mini.land .pp-hdr{padding-right:0}
+body.mini .hf-panel{padding:14px 14px 12px}
+body.mini .hf-plinth{margin:10px 10px 10px}
+body.mini.land .hf-panel{padding-bottom:12px}
+body.mini.land .hf-plinth{margin:10px}
+body.mini.tiny.land .hf-panel{display:none}
+body.mini:not(.land) .hf-row{margin-top:8px}
+body.mini.short:not(.land) .hf-panel{display:none}
 </style>
 </head>
 <body class="grain">
@@ -989,7 +1009,7 @@ const V={angle:0,spin:0,arm:-4,armTarget:-4,liftUntil:0};
 let geo=null;
 let MINI=false;
 function layout(){
-  MINI=(PIPM||DESKTOP)&&(innerWidth<560||innerHeight<520);document.body.classList.toggle('mini',MINI);
+  MINI=(PIPM||DESKTOP)&&(innerWidth<560||innerHeight<520);document.body.classList.toggle('mini',MINI);document.body.classList.toggle('short',MINI&&innerHeight<420);document.body.classList.toggle('tiny',MINI&&Math.min(innerWidth,innerHeight)<400);
   const land=innerWidth>innerHeight*(MINI?.85:1.05);
   const wrap=$('#v-vinyl .wrap');
   wrap.style.gridTemplateRows=land?'none':'44% 56%';
@@ -1364,7 +1384,7 @@ function setTrack(n){
 
 /* ================= skin meta (papel / ipod) ================= */
 function nextName(){if(T.source==='demo'){const n=DEMO[(demoIdx+1)%DEMO.length];return n.title+' — '+n.artist}return qCache.nextName||'—'}
-function fitPapelTitle(){const el=$('#ppTitle');if(!el||!$('#v-papel').classList.contains('on'))return;let fs=Math.min(76,innerWidth*(geo&&geo.land?.07:.16));el.style.fontSize=fs+'px';let guard=0;while(el.scrollHeight>fs*0.95*2.05&&fs>24&&guard++<40){fs-=2;el.style.fontSize=fs+'px'}}
+function fitPapelTitle(){const el=$('#ppTitle');if(!el||!$('#v-papel').classList.contains('on'))return;let fs=MINI?Math.min(56,innerWidth*(geo&&geo.land?.085:.15),innerHeight*.13):Math.min(76,innerWidth*(geo&&geo.land?.07:.16));el.style.fontSize=fs+'px';let guard=0;while(el.scrollHeight>fs*0.95*2.05&&fs>24&&guard++<40){fs-=2;el.style.fontSize=fs+'px'}}
 function updateSkinMeta(){
   const no=T.trackNo||(T.source==='demo'?demoIdx+1:null),tot=T.total||(T.source==='demo'?DEMO.length:null);
   $('#ppTitle').textContent=T.title.replace(/\s*[\(\[-].*(remaster|version|feat|live|edit|mix).*$/i,'')+'.';
@@ -1837,7 +1857,7 @@ addEventListener('keydown',e=>{kpos=(e.key===KON[kpos])?kpos+1:(e.key===KON[0]?1
 function layoutExtra(){
   const ctrl=$('#controls').offsetHeight;document.documentElement.style.setProperty('--ctrlh',ctrl+'px');
   const w=$('.hf-well');if(w&&w.clientWidth){const sz=Math.min(w.clientWidth,w.clientHeight)*0.92;w.querySelector('.tt').style.setProperty('--tt',sz+'px')}
-  const art=$('.pp-art');if(art&&art.clientWidth){const W=art.clientWidth,H=art.clientHeight;const sz=Math.max(90,Math.min(H*.8,W*.55));const sl=$('.pp-sleeve'),tt=$('.pp-tt');
+  const art=$('.pp-art');if(art&&art.clientWidth){const W=art.clientWidth,H=art.clientHeight;const sz=Math.max(MINI?60:90,Math.min(H*(MINI?.86:.8),W*(MINI?.6:.55)));const sl=$('.pp-sleeve'),tt=$('.pp-tt');
     Object.assign(sl.style,{width:sz+'px',height:sz+'px',left:(W*.06)+'px',top:((H-sz)/2)+'px'});tt.style.setProperty('--tt',(sz*.98)+'px');Object.assign(tt.style,{left:(W*.06+sz*.42)+'px',top:((H-sz*.98)/2)+'px'})}
   fitPapelTitle();
   const iw=$('#ipWrap');if(iw&&iw.clientWidth){const W=iw.clientWidth,H=iw.clientHeight-60;$('#ipod').style.setProperty('--ipw',Math.min(W*.84,H*.94/1.68,460)+'px')}
