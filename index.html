@@ -616,7 +616,7 @@ body.pip #pipBtn{display:none!important}
 .cat .tl{transform-box:fill-box;transform-origin:100% 100%;animation:catTail 1.7s ease-in-out infinite alternate}
 .cat .tl.tr{transform-origin:0% 100%}.cat .tl.tb{animation:none}
 .cat .w .bd{animation:catBob .21s ease-in-out infinite alternate}
-.cat .ey{transform-box:fill-box;transform-origin:center;animation:catBlink 4.2s infinite}
+.cat .ey{transform-box:fill-box;transform-origin:center;animation:catBlink 4.6s infinite}
 .cat .p.loaf .ey{animation:catSleepy 5s ease-in-out infinite}
 .cat .pw{transform-box:fill-box;transform-origin:50% 100%;animation:catPaw .5s ease-in-out infinite alternate}
 .cat .pw.b{animation-direction:alternate-reverse}
@@ -1806,49 +1806,54 @@ function eggTick(){
 setInterval(eggTick,45000);
 /* ---- gatos (siluetas) ---- */
 const CATS=[
-  {n:'gris',c:'#7f838b',ring:'#f6f3ee',ol:'#f6f3ee',sc:.78,v:95,says:['mii','miau','mrrp?']},
-  {n:'tux',c:'#17171a',ring:'#f6f3ee',ol:'#f6f3ee',wh:'#f6f3ee',sc:1,v:70,says:['miau','mrrrau','¿y mi comida?']},
-  {n:'bg',c:'#f4f1eb',ring:'#2a2b2f',ol:'#3a3c41',patch:'#8a8e95',sc:.95,v:62,says:['miau','prrr…','miau ♡']}];
-const RJ='stroke-linejoin="round" stroke-width="5"';
-function catEyes(k,pts,r){return `<g class="ey">${pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${k.c}" stroke="${k.ring}" stroke-width="1.7"/><circle cx="${x+r*.25}" cy="${y-r*.2}" r="${r*.32}" fill="${k.ring}"/>`).join('')}</g>`}
-function catWh(k,x1,x2,y){const s=`stroke="${k.ring}" stroke-width=".9" stroke-linecap="round" opacity=".85"`;return `<path d="M${x1} ${y}l-11 -2.5M${x1} ${y+2.5}l-11 2M${x2} ${y}l11 -2.5M${x2} ${y+2.5}l11 2" ${s}/>`}
+  {n:'gris',c:'#80848c',ring:'#f6f3ee',eye:'#a6d96a',sc:.78,v:95,says:['mii','miau','mrrp?']},
+  {n:'tux',c:'#17171a',ring:'#f6f3ee',eye:'#b9e35c',wh:'#f6f3ee',sc:1,v:70,says:['miau','mrrrau','¿y mi comida?']},
+  {n:'bg',c:'#f4f1eb',ring:'#2a2b2f',eye:'#7ccf8c',patch:'#8a8e95',sc:.95,v:62,says:['miau','prrr…','miau ♡']}];
+function catEye(k,x,y,w,h,tilt){const lid=k.c==='#17171a'?'#000':'rgba(20,20,22,.85)';
+  return `<g transform="translate(${x} ${y}) rotate(${tilt})"><g class="ey"><path d="M${-w} 0C${-w*.55} ${-h*1.3} ${w*.55} ${-h*1.3} ${w} ${-h*.25}C${w*.5} ${h*1.15} ${-w*.55} ${h*1.15} ${-w} 0Z" fill="${k.eye}" stroke="${lid}" stroke-width="1.1"/>
+  <ellipse cx="${w*.06}" cy="${-h*.05}" rx="${w*.17}" ry="${h*.92}" fill="#111"/><circle cx="${w*.32}" cy="${-h*.42}" r="${w*.16}" fill="#fff" opacity=".9"/></g></g>`}
+function catEyes(k,x1,x2,y,w,h){return catEye(k,x1,y,w,h,9)+`<g transform="translate(${x2*2} 0) scale(-1 1)">${catEye(k,x2,y,w,h,9)}</g>`}
+function catWh(k,x1,x2,y){const s=`stroke="${k.ring}" stroke-width=".85" stroke-linecap="round" opacity=".8" fill="none"`;return `<path d="M${x1} ${y}q-6 -2 -12 -1.5M${x1} ${y+2.5}q-6 0 -12 2.5M${x2} ${y}q6 -2 12 -1.5M${x2} ${y+2.5}q6 0 12 2.5" ${s}/>`}
+const catNose=(k,x,y)=>`<path d="M${x-1.8} ${y}h3.6l-1.8 2.2z" fill="${k.c==='#17171a'?'#3a2a2e':'#d98a96'}"/>`;
+const EAR=(c)=>`fill="${c}" stroke="${c}" stroke-width="3" stroke-linejoin="round"`;
+function headSit(k){const c=k.c,p=k.patch;return `<path d="M46 21C45 13 45 7 47 1C53 4 58 7 61 11ZM71 11C75 7 79 4 85 1C87 7 87 13 86 21Z" ${EAR(p||c)}/>
+  <path d="M44 28C43 15 52 7 66 7C80 7 89 15 88 28C92 33 90 42 83 46C77 50 55 50 49 46C42 42 40 33 44 28Z" fill="${c}"/>
+  ${p?`<path d="M44 26C44 14 53 7 66 7C67 15 60 22 50 25C47 26 45 26 44 26Z" fill="${p}"/>`:''}
+  ${catEyes(k,56.5,75.5,29,7.4,5.2)}${catNose(k,66,36)}${catWh(k,52,80,38)}`}
+function tleg(x,y,h,c,w){return `<path d="M${x} ${y}h9.5l-1 ${h-5}q0 5 -3.8 5h-1.4q-3.8 0 -3.8 -5z" fill="${c}"/><ellipse cx="${x+4.8}" cy="${y+h-2.2}" rx="5.4" ry="2.8" fill="${w||c}"/>`}
 const CATP={
- walk(k){const c=k.c,p=k.patch,w=k.wh,leg=(x,y,h,cls)=>`<g class="lg ${cls}"><rect x="${x}" y="${y}" width="10" height="${h}" rx="5" fill="${c}"/>${w?`<rect x="${x}" y="${y+h-7}" width="10" height="7" rx="3.5" fill="${w}"/>`:''}</g>`;
-  return `<path class="tl" d="M27 50C11 48 6 34 12 19" stroke="${p||c}" stroke-width="8.5" stroke-linecap="round" fill="none"/>
-  ${leg(31,58,22,'b')}${leg(79,58,22,'')}
-  <g class="bd"><path d="M23 52C23 36 44 31 68 32C88 33 99 38 100 52C101 63 88 67 64 67C38 67 23 64 23 52Z" fill="${c}"/>
-  ${p?`<ellipse cx="50" cy="40" rx="17" ry="7" fill="${p}"/>`:''}
-  ${leg(42,60,20,'b')}${leg(89,60,20,'')}
-  ${w?`<path d="M90 45C95 55 93 64 86 67C79 64 78 54 83 46Z" fill="${w}"/>`:''}
-  <g class="hd"><path d="M85 25L88 5L100 15ZM102 15L116 5L118 26Z" fill="${p||c}" stroke="${p||c}" ${RJ}/>
-  <path d="M83 34C83 21 90 13 100 13C111 13 119 21 118 34C117 45 109 51 100 51C91 51 83 45 83 34Z" fill="${c}"/>
-  ${p?`<path d="M86 24C89 16 95 13 101 13C104 17 101 23 94 26C91 27 88 26 86 24Z" fill="${p}"/>`:''}
-  ${catEyes(k,[[93,31],[108.5,31]],6.3)}${catWh(k,88,113,39)}</g></g>`},
+ walk(k){const c=k.c,p=k.patch,w=k.wh,leg=(x,y,h,cls)=>`<g class="lg ${cls}">${tleg(x,y,h,c,w)}</g>`;
+  return `<path class="tl" d="M27 47C12 47 7 37 9 27C10 19 14 15 18 11" stroke="${p||c}" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+  ${leg(30,56,24,'b')}${leg(80,56,24,'')}
+  <g class="bd"><path d="M22 50C20 38 30 31 46 31C62 31 74 33 86 36C96 39 101 46 99 55C97 62 90 65 80 65C66 68 50 68 40 66C28 66 23 59 22 50Z" fill="${c}"/>
+  ${p?`<path d="M34 33C42 30 56 30 66 33C62 40 50 43 40 41C36 40 34 37 34 33Z" fill="${p}"/>`:''}
+  ${w?`<path d="M96 46C101 52 100 60 94 64C88 61 87 53 91 47Z" fill="${w}"/>`:''}
+  ${leg(41,58,22,'b')}${leg(89,58,22,'')}
+  <g class="hd"><path d="M86 22C86 15 87 9 89 3C94 6 98 10 101 14ZM101 14C105 10 110 6 116 3C117 9 118 16 117 23Z" ${EAR(p||c)}/>
+  <path d="M84 32C82 20 90 12 101 12C112 12 120 20 118 32C121 37 118 45 112 48C106 52 96 52 90 48C84 45 81 38 84 32Z" fill="${c}"/>
+  ${p?`<path d="M85 28C86 17 93 12 101 12C102 19 96 25 88 28C87 28 86 28 85 28Z" fill="${p}"/>`:''}
+  ${catEyes(k,93.5,109,31,6.4,4.6)}${catNose(k,101.5,38)}${catWh(k,90,113,40)}</g></g>`},
  sit(k){const c=k.c,p=k.patch,w=k.wh;
-  return `<path class="tl tr" d="M86 77C104 79 111 65 104 52" stroke="${p||c}" stroke-width="7.5" stroke-linecap="round" fill="none"/>
-  <path d="M44 80C36 80 35 68 38 56C41 44 47 38 54 36L78 36C86 40 91 52 92 64C93 76 88 80 80 80Z" fill="${c}"/>
-  ${p?`<ellipse cx="84" cy="62" rx="7" ry="11" fill="${p}"/>`:''}
-  ${w?`<path d="M57 44C54 58 57 70 66 75C75 70 78 58 75 44Z" fill="${w}"/><ellipse cx="56" cy="78.5" rx="7" ry="3" fill="${w}"/><ellipse cx="76" cy="78.5" rx="7" ry="3" fill="${w}"/>`:''}
-  <g class="hd"><path d="M44 19L45 1L58 9ZM74 9L87 1L88 19Z" fill="${p||c}" stroke="${p||c}" ${RJ}/>
-  <path d="M42 28C42 13 52 6 66 6C80 6 90 13 90 28C90 42 80 50 66 50C52 50 42 42 42 28Z" fill="${c}"/>
-  ${p?`<path d="M44 21C47 11 56 6 66 6C66 14 58 20 48 23C46 23 45 22 44 21Z" fill="${p}"/>`:''}
-  ${catEyes(k,[[56,27],[76,27]],7.3)}${catWh(k,50,82,36)}</g>`},
- loaf(k){const c=k.c,p=k.patch,w=k.wh;
-  return `<path d="M26 80C13 80 13 66 20 56C28 44 46 40 64 42C84 42 98 50 102 62C104 74 98 80 88 80Z" fill="${c}"/>
-  ${p?`<ellipse cx="44" cy="53" rx="15" ry="7" fill="${p}"/>`:''}
+  return `<path class="tl tr" d="M90 77C106 79 112 67 106 56C104 52 105 48 108 46" stroke="${p||c}" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M40 80C33 80 31 72 33 63C35 52 42 44 50 40L80 40C88 44 95 54 96 66C97 75 93 80 86 80Z" fill="${c}"/>
+  ${p?`<path d="M82 52C90 56 93 66 90 76C84 74 80 66 80 58Z" fill="${p}"/>`:''}
+  <path d="M60 58C59 66 59 73 60 79M72 58C73 66 73 73 72 79" stroke="${k.ring}" stroke-width=".8" opacity=".35" fill="none"/>
+  ${w?`<path d="M57 45C54 58 57 70 66 75C75 70 78 58 75 45Z" fill="${w}"/><ellipse cx="58" cy="78.6" rx="6.5" ry="3" fill="${w}"/><ellipse cx="74" cy="78.6" rx="6.5" ry="3" fill="${w}"/>`:''}
+  <g class="hd">${headSit(k)}</g>`},
+ loaf(k){const c=k.c,p=k.patch;
+  return `<path d="M26 80C14 80 12 68 18 58C26 46 44 41 64 42C82 43 96 50 101 62C104 74 98 80 88 80Z" fill="${c}"/>
+  ${p?`<path d="M30 50C38 44 52 42 62 44C58 52 46 56 36 55C32 54 30 52 30 50Z" fill="${p}"/>`:''}
   <path class="tl tb" d="M30 79C48 82 66 82 80 78" stroke="${p||c}" stroke-width="6" stroke-linecap="round" fill="none"/>
-  <g class="hd"><path d="M72 43L74 24L86 33ZM96 33L108 24L110 44Z" fill="${p||c}" stroke="${p||c}" ${RJ}/>
-  <path d="M70 54C70 40 78 32 90 32C102 32 112 40 112 54C112 66 103 72 91 72C79 72 70 66 70 54Z" fill="${c}"/>
-  ${p?`<path d="M72 46C75 37 82 32 90 32C91 39 85 45 76 48Z" fill="${p}"/>`:''}
-  ${catEyes(k,[[83,52],[99.5,52]],6.7)}${catWh(k,78,106,60)}</g>`},
- roll(k){const c=k.c,p=k.patch,w=k.wh,paw=(x,y,h,cls)=>`<g class="pw ${cls}"><rect x="${x}" y="${y}" width="9" height="${h}" rx="4.5" fill="${c}"/>${w?`<rect x="${x}" y="${y}" width="9" height="6" rx="3" fill="${w}"/>`:''}</g>`;
+  <g class="hd"><path d="M74 45C73 37 73 31 75 25C80 28 84 31 88 34ZM94 34C98 31 103 28 108 25C110 31 110 37 109 45Z" ${EAR(p||c)}/>
+  <path d="M72 52C71 40 79 32 91 32C103 32 111 40 110 52C114 57 111 66 104 69C98 72 84 72 78 69C71 66 68 57 72 52Z" fill="${c}"/>
+  ${p?`<path d="M72 50C72 39 80 32 91 32C92 39 86 46 76 49C74 50 73 50 72 50Z" fill="${p}"/>`:''}
+  ${catEyes(k,82.5,99.5,53,6.6,4.6)}${catNose(k,91,60)}${catWh(k,79,103,62)}</g>`},
+ roll(k){const c=k.c,p=k.patch,w=k.wh,paw=(x,y,h,cls)=>`<g class="pw ${cls}"><g transform="translate(${x*2+9.5} ${y*2+h}) scale(-1 -1)">${tleg(x,y,h,c,w)}</g></g>`;
   return `${paw(50,44,20,'')}${paw(62,47,18,'b')}${paw(88,46,20,'b')}${paw(99,49,18,'')}
   <path class="tl tr" d="M106 71C119 67 121 53 114 45" stroke="${p||c}" stroke-width="7" stroke-linecap="round" fill="none"/>
-  <path d="M32 78C25 70 31 60 47 58C67 56 92 58 104 64C112 68 111 78 101 80L38 80Z" fill="${c}"/>
-  ${w?`<ellipse cx="72" cy="61" rx="20" ry="3.6" fill="${w}"/>`:''}${p?`<ellipse cx="84" cy="73" rx="13" ry="5.5" fill="${p}"/>`:''}
-  <g class="hd"><path d="M13 57L1 52L10 66ZM11 72L1 78L15 79Z" fill="${p||c}" stroke="${p||c}" ${RJ}/>
-  <path d="M9 66C9 56 17 50 27 50C37 50 44 58 44 66C44 75 37 80 27 80C17 80 9 74 9 66Z" fill="${c}"/>
-  ${catEyes(k,[[24,59.5],[26,72.5]],5.3)}</g>`}};
+  <path d="M32 77C25 69 32 59 48 57C68 55 92 57 104 63C113 67 111 78 101 80L36 80Z" fill="${c}"/>
+  ${w?`<path d="M54 58C66 55 82 55 92 58C84 62 64 62 54 58Z" fill="${w}"/>`:''}${p?`<ellipse cx="84" cy="73" rx="13" ry="5.5" fill="${p}"/>`:''}
+  <g class="hd"><g transform="translate(29 64) rotate(-100) scale(.62) translate(-66 -28)">${headSit(k)}</g></g>`}};
 function catSVG(k,pose){return `<svg viewBox="-2 -2 134 84" width="${Math.round(120*k.sc)}" height="${Math.round(75*k.sc)}">${CATP[pose](k)}</svg>`}
 let catOn=false;
 function catWalk(force){
